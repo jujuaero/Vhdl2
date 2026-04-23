@@ -20,6 +20,8 @@ begin
     process(A, B, SEL_FCT, SR_IN_L, SR_IN_R)
         variable a_signed : signed(3 downto 0);
         variable b_signed : signed(3 downto 0);
+        variable a_unsigned : unsigned(3 downto 0);
+        variable b_unsigned : unsigned(3 downto 0);
     begin
         -- Initialisation par défaut pour éviter les verrous (latches)
         S <= (others => '0');
@@ -29,6 +31,8 @@ begin
         -- Conversion pour les opérations arithmétiques signées
         a_signed := signed(A);
         b_signed := signed(B);
+        a_unsigned := unsigned(A);
+        b_unsigned := unsigned(B);
 
         case SEL_FCT is
             when "0000" => -- nop [cite: 169-174]
@@ -38,22 +42,22 @@ begin
                 S <= std_logic_vector(resize(a_signed, 8));
 
             when "0010" => -- S = not A [cite: 180-185]
-                S <= std_logic_vector(resize(not a_signed, 8));
+                S <= std_logic_vector(resize(not a_unsigned, 8));
 
             when "0011" => -- S = B [cite: 186-191]
                 S <= std_logic_vector(resize(b_signed, 8));
 
             when "0100" => -- S = not B [cite: 192-196]
-                S <= std_logic_vector(resize(not b_signed, 8));
+                S <= std_logic_vector(resize(not b_unsigned, 8));
 
             when "0101" => -- S = A and B [cite: 197-202]
-                S <= std_logic_vector(resize(a_signed and b_signed, 8));
+                S <= std_logic_vector(resize(a_unsigned and b_unsigned, 8));
 
             when "0110" => -- S = A or B [cite: 203-208]
-                S <= std_logic_vector(resize(a_signed or b_signed, 8));
+                S <= std_logic_vector(resize(a_unsigned or b_unsigned, 8));
 
             when "0111" => -- S = A xor B [cite: 209-213]
-                S <= std_logic_vector(resize(a_signed xor b_signed, 8));
+                S <= std_logic_vector(resize(a_unsigned xor b_unsigned, 8));
 
             when "1000" => -- S = A + B avec retenue d'entrée [cite: 214-218]
                 if SR_IN_R = '1' then
