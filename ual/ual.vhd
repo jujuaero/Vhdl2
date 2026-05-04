@@ -7,6 +7,8 @@ entity UAL is
         A        : in  STD_LOGIC_VECTOR(3 downto 0);
         B        : in  STD_LOGIC_VECTOR(3 downto 0);
         SEL_FCT  : in  STD_LOGIC_VECTOR(3 downto 0);
+        SEL_ROUTE: in  STD_LOGIC_VECTOR(3 downto 0);
+        SEL_OUT  : in  STD_LOGIC_VECTOR(1 downto 0);
         SR_IN_L  : in  STD_LOGIC;
         SR_IN_R  : in  STD_LOGIC;
         S        : out STD_LOGIC_VECTOR(7 downto 0);
@@ -17,7 +19,7 @@ end UAL;
 
 architecture Behavioral of UAL is
 begin
-    process(A, B, SEL_FCT, SR_IN_L, SR_IN_R)
+    process(A, B, SEL_FCT, SEL_ROUTE, SEL_OUT, SR_IN_L, SR_IN_R)
         variable a_signed : signed(3 downto 0);
         variable b_signed : signed(3 downto 0);
         variable a_unsigned : unsigned(3 downto 0);
