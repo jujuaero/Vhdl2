@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a35tcsg324-1" LaunchTime="1778353126">
+<GenRun Id="impl_1" LaunchPart="xc7a35tcsg324-1" LaunchTime="1778354691">
   <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
   <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
   <File Type="POSTROUTE-PHYSOPT-RQS" Name="Arty_Digilent_TopLevel_postroute_physopted.rqs"/>
@@ -164,7 +164,7 @@
     <File Path="$PSRCDIR/sources_1/imports/ual/ual_system_top.vhd">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../ual/ual_system_top.vhd"/>
-        <Attr Name="ImportTime" Val="1778345627"/>
+        <Attr Name="ImportTime" Val="1778354373"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
@@ -172,7 +172,7 @@
     <File Path="$PSRCDIR/sources_1/imports/ual/Arty_Digilent_TopLevel_Empty.vhd">
       <FileInfo>
         <Attr Name="ImportPath" Val="$PPRDIR/../ual/Arty_Digilent_TopLevel_Empty.vhd"/>
-        <Attr Name="ImportTime" Val="1778352847"/>
+        <Attr Name="ImportTime" Val="1778354373"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>

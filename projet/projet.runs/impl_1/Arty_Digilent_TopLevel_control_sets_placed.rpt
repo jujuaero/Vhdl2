@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (lin64) Build 6140274 Wed May 21 22:58:25 MDT 2025
-| Date         : Sat May  9 21:00:48 2026
+| Date         : Sat May  9 21:26:55 2026
 | Host         : 0226AUBUVVDO011 running 64-bit Ubuntu 24.04.3 LTS
 | Command      : report_control_sets -verbose -file Arty_Digilent_TopLevel_control_sets_placed.rpt
 | Design       : Arty_Digilent_TopLevel
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |     3 |
-|    Minimum number of control sets                        |     3 |
+| Total control sets                                       |     5 |
+|    Minimum number of control sets                        |     5 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |     7 |
+| Unused register locations in slices containing registers |    16 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,12 +39,12 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |     3 |
+| Total control sets |     5 |
 | >= 0 to < 4        |     0 |
-| >= 4 to < 6        |     0 |
-| >= 6 to < 8        |     2 |
-| >= 8 to < 10       |     0 |
-| >= 10 to < 12      |     0 |
+| >= 4 to < 6        |     1 |
+| >= 6 to < 8        |     1 |
+| >= 8 to < 10       |     1 |
+| >= 10 to < 12      |     1 |
 | >= 12 to < 14      |     0 |
 | >= 14 to < 16      |     0 |
 | >= 16              |     1 |
@@ -60,22 +60,24 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | No           | No                    | No                     |               0 |            0 |
 | No           | No                    | Yes                    |               0 |            0 |
-| No           | Yes                   | No                     |              26 |            8 |
-| Yes          | No                    | No                     |               0 |            0 |
+| No           | Yes                   | No                     |              26 |            9 |
+| Yes          | No                    | No                     |              10 |            3 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |               7 |            2 |
+| Yes          | Yes                   | No                     |              12 |            4 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
 4. Detailed Control Set Information
 -----------------------------------
 
-+----------------------+----------------------------------+-------------------------------------------+------------------+----------------+--------------+
-|     Clock Signal     |           Enable Signal          |              Set/Reset Signal             | Slice Load Count | Bel Load Count | Bels / Slice |
-+----------------------+----------------------------------+-------------------------------------------+------------------+----------------+--------------+
-|  CLK100MHZ_IBUF_BUFG |                                  | top_inst/mem_ctrl/instr_mem/pc[6]_i_1_n_0 |                1 |              7 |         7.00 |
-|  CLK100MHZ_IBUF_BUFG | top_inst/mem_ctrl/instr_mem/E[0] | btn_IBUF[0]                               |                2 |              7 |         3.50 |
-|  CLK100MHZ_IBUF_BUFG |                                  | btn_IBUF[0]                               |                7 |             19 |         2.71 |
-+----------------------+----------------------------------+-------------------------------------------+------------------+----------------+--------------+
++----------------------+------------------------------------------------+-------------------------------------------+------------------+----------------+--------------+
+|     Clock Signal     |                  Enable Signal                 |              Set/Reset Signal             | Slice Load Count | Bel Load Count | Bels / Slice |
++----------------------+------------------------------------------------+-------------------------------------------+------------------+----------------+--------------+
+|  CLK100MHZ_IBUF_BUFG | top_inst/mem_ctrl/instr_mem/E[0]               | btn_IBUF[0]                               |                2 |              4 |         2.00 |
+|  CLK100MHZ_IBUF_BUFG |                                                | top_inst/mem_ctrl/instr_mem/pc[6]_i_1_n_0 |                2 |              7 |         3.50 |
+|  CLK100MHZ_IBUF_BUFG | top_inst/custom_ops_inst/result_buf[7]_i_1_n_0 | btn_IBUF[0]                               |                2 |              8 |         4.00 |
+|  CLK100MHZ_IBUF_BUFG | top_inst/custom_ops_inst/b_stored[3]_i_1_n_0   |                                           |                3 |             10 |         3.33 |
+|  CLK100MHZ_IBUF_BUFG |                                                | btn_IBUF[0]                               |                7 |             19 |         2.71 |
++----------------------+------------------------------------------------+-------------------------------------------+------------------+----------------+--------------+
 
 

@@ -30,7 +30,11 @@ entity ual_system_top is
         INSTR_OUT   : out STD_LOGIC_VECTOR(9 downto 0);
         SEL_FCT_OUT : out STD_LOGIC_VECTOR(3 downto 0);
         SEL_ROUTE_OUT : out STD_LOGIC_VECTOR(3 downto 0);
-        SEL_OUT_SIG : out STD_LOGIC_VECTOR(1 downto 0)
+        SEL_OUT_SIG : out STD_LOGIC_VECTOR(1 downto 0);
+        
+        -- Shift register outputs (for display)
+        SR_OUT_L    : out STD_LOGIC;
+        SR_OUT_R    : out STD_LOGIC
     );
 end ual_system_top;
 
@@ -100,6 +104,8 @@ begin
 
     -- Output assignments
     S_OUT <= S_from_ual;
+    SR_OUT_L <= SR_OUT_L_sig;
+    SR_OUT_R <= SR_OUT_R_sig;
     
     -- Debug outputs
     INSTR_OUT <= (others => '0');  -- Could feed back instruction from memory_controller
