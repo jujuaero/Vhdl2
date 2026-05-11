@@ -92,5 +92,4 @@ begin
     led3_r <= res_out_sig(7);   -- 8ème LED = RES_OUT[7] en rouge
     led3_g <= res_valid_sig;     -- Vert = RES_VALID (8ème LED avec du vert quand résultat dispo)
     led3_b <= '0';
-     
 end Behavioral;
