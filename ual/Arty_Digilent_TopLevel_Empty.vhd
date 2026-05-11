@@ -32,6 +32,8 @@ architecture Behavioral of Arty_Digilent_TopLevel is
     signal sel_out_sig   : std_logic_vector(1 downto 0);
     signal sr_out_l_sig  : std_logic;
     signal sr_out_r_sig  : std_logic;
+    signal custom_sel_l_sig : std_logic;
+    signal custom_sel_r_sig : std_logic;
 
 begin
 
@@ -42,14 +44,21 @@ begin
     b_in_sig  <= sw;     -- sw[3:0] → B_IN[3:0] (A = B)
     reset_sig <= btn(0); -- btn(0) : reset global
 
+    -- Mapping boutons -> opérations custom
+    -- btn1: RES_OUT_1 (A*B)        => L=1, R=0
+    -- btn2: RES_OUT_2 (A+B)        => L=0, R=1
+    -- btn3: RES_OUT_3 (XNOR/OR)    => L=1, R=1
+    custom_sel_l_sig <= btn(1) or btn(3);
+    custom_sel_r_sig <= btn(2) or btn(3);
+
     top_inst: entity work.ual_system_top
         port map (
             clk           => CLK100MHZ,
             reset         => reset_sig,
             A_IN          => a_in_sig,
             B_IN          => b_in_sig,
-            SR_IN_L       => '0',           -- Non utilisés pour le test
-            SR_IN_R       => '0',
+            SR_IN_L       => custom_sel_l_sig,
+            SR_IN_R       => custom_sel_r_sig,
             S_OUT         => s_out_sig,
             RES_OUT       => res_out_sig,
             RES_VALID     => res_valid_sig,

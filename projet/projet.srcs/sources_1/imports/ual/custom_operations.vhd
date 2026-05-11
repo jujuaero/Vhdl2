@@ -34,6 +34,7 @@ architecture Behavioral of custom_operations is
     signal operation_stored : STD_LOGIC_VECTOR(1 downto 0) := (others => '0');
     signal a_stored : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
     signal b_stored : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+    signal start_prev : STD_LOGIC := '0';
     
     -- Computed result (combinational)
     signal computed_result : STD_LOGIC_VECTOR(7 downto 0);
@@ -76,17 +77,21 @@ begin
     
     -- State machine: handle START signal and computation timing
     process(clk)
+        variable start_rise : boolean;
     begin
         if rising_edge(clk) then
             if reset = '1' then
                 state <= IDLE;
                 result_buf <= (others => '0');
                 RES_VALID <= '0';
+                start_prev <= '0';
             else
+                start_rise := (start = '1' and start_prev = '0');
+                start_prev <= start;
                 case state is
                     when IDLE =>
-                        -- Wait for START signal
-                        if start = '1' then
+                        -- Wait for START rising edge
+                        if start_rise then
                             a_stored <= A;
                             b_stored <= B;
                             operation_stored <= operation;
@@ -106,8 +111,8 @@ begin
                         RES_VALID <= '1';  -- Result is now ready
                     
                     when RESULT_READY =>
-                        -- Hold result until next START
-                        if start = '1' then
+                        -- Hold result until next START rising edge
+                        if start_rise then
                             a_stored <= A;
                             b_stored <= B;
                             operation_stored <= operation;

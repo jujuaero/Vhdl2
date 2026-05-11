@@ -49,8 +49,19 @@ architecture Behavioral of ual_system_top is
     signal S_from_ual     : STD_LOGIC_VECTOR(7 downto 0);
     signal SR_OUT_L_sig   : STD_LOGIC;
     signal SR_OUT_R_sig   : STD_LOGIC;
+    signal custom_start_sig : STD_LOGIC;
+    signal custom_operation_sig : STD_LOGIC_VECTOR(1 downto 0);
 
 begin
+
+    -- Button-driven custom ops selection (encoded in SR inputs from board top):
+    -- SR_IN_L=1, SR_IN_R=0 -> RES_OUT_1 (A*B)      => "00"
+    -- SR_IN_L=0, SR_IN_R=1 -> RES_OUT_2 (A+B)      => "01"
+    -- SR_IN_L=1, SR_IN_R=1 -> RES_OUT_3 (XNOR/OR)  => "10"
+    custom_start_sig <= SR_IN_L or SR_IN_R;
+    custom_operation_sig <= "10" when (SR_IN_L = '1' and SR_IN_R = '1') else
+                            "01" when (SR_IN_R = '1') else
+                            "00";
 
     -- Instantiate memory controller (manages buffers, caches, instruction sequencing)
     mem_ctrl: entity work.memory_controller
@@ -94,8 +105,8 @@ begin
         port map (
             clk => clk,
             reset => reset,
-            start => '1',  -- Continuously compute (or can be gated by instruction)
-            operation => SEL_FCT_internal(1 downto 0),  -- Use lower 2 bits of SEL_FCT
+            start => custom_start_sig,
+            operation => custom_operation_sig,
             A => A_to_ual,
             B => B_to_ual,
             RES_OUT => RES_OUT,
