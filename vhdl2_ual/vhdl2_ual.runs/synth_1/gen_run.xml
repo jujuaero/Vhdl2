@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="synth_1" LaunchPart="xc7a35tcsg324-1" LaunchTime="1778681717">
+  <File Type="VDS-TIMINGSUMMARY" Name="Arty_Digilent_TopLevel_timing_summary_synth.rpt"/>
+  <File Type="RDS-DCP" Name="Arty_Digilent_TopLevel.dcp"/>
+  <File Type="RDS-UTIL-PB" Name="Arty_Digilent_TopLevel_utilization_synth.pb"/>
+  <File Type="RDS-UTIL" Name="Arty_Digilent_TopLevel_utilization_synth.rpt"/>
+  <File Type="VDS-TIMING-PB" Name="Arty_Digilent_TopLevel_timing_summary_synth.pb"/>
+  <File Type="PA-TCL" Name="Arty_Digilent_TopLevel.tcl"/>
+  <File Type="REPORTS-TCL" Name="Arty_Digilent_TopLevel_reports.tcl"/>
+  <File Type="RDS-RDS" Name="Arty_Digilent_TopLevel.vds"/>
+  <File Type="RDS-PROPCONSTRS" Name="Arty_Digilent_TopLevel_drc_synth.rpt"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/imports/ual/instruction_memory.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/instruction_memory.vhd"/>
+        <Attr Name="ImportTime" Val="1778345627"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/register.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/register.vhd"/>
+        <Attr Name="ImportTime" Val="1778345627"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/buffer_with_route.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/buffer_with_route.vhd"/>
+        <Attr Name="ImportTime" Val="1778345627"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/memory_controller.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/memory_controller.vhd"/>
+        <Attr Name="ImportTime" Val="1778345627"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/ual.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/ual.vhd"/>
+        <Attr Name="ImportTime" Val="1778345627"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/custom_operations.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/custom_operations.vhd"/>
+        <Attr Name="ImportTime" Val="1778677186"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/ual_system_top.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/ual_system_top.vhd"/>
+        <Attr Name="ImportTime" Val="1778677186"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/imports/ual/Arty_Digilent_TopLevel_Empty.vhd">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/ual/Arty_Digilent_TopLevel_Empty.vhd"/>
+        <Attr Name="ImportTime" Val="1778677186"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="Arty_Digilent_TopLevel"/>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <File Path="$PSRCDIR/constrs_1/imports/Documents/Arty_Digilent_TopLevel_Constraints.xdc">
+      <FileInfo>
+        <Attr Name="ImportPath" Val="$PPRDIR/../Documents/Arty_Digilent_TopLevel_Constraints.xdc"/>
+        <Attr Name="ImportTime" Val="1778677186"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1" RelGenDir="$PGENDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2025">
+      <Desc>Vivado Synthesis Defaults</Desc>
+    </StratHandle>
+    <Step Id="synth_design"/>
+  </Strategy>
+</GenRun>
