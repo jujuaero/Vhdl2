@@ -15,15 +15,42 @@ end top_logigame;
 
 architecture Behavioral of top_logigame is
     signal led_color_s : std_logic_vector(2 downto 0);
+    signal btn_r_db_s  : std_logic := '0';
+    signal btn_g_db_s  : std_logic := '0';
+    signal btn_b_db_s  : std_logic := '0';
 begin
+    U_DB_R : entity work.debounce
+        port map(
+            clk  => CLK100MHZ,
+            res  => btn(0),
+            din  => btn(1),
+            dout => btn_r_db_s
+        );
+
+    U_DB_G : entity work.debounce
+        port map(
+            clk  => CLK100MHZ,
+            res  => btn(0),
+            din  => btn(2),
+            dout => btn_g_db_s
+        );
+
+    U_DB_B : entity work.debounce
+        port map(
+            clk  => CLK100MHZ,
+            res  => btn(0),
+            din  => btn(3),
+            dout => btn_b_db_s
+        );
+
     U_GAME : entity work.game_controller
         port map(
             clk       => CLK100MHZ,
             res       => btn(0),
             sw_level  => sw(3 downto 2),
-            btn_r     => btn(1),
-            btn_g     => btn(2),
-            btn_b     => btn(3),
+            btn_r     => btn_r_db_s,
+            btn_g     => btn_g_db_s,
+            btn_b     => btn_b_db_s,
             led_color => led_color_s,
             score     => led,
             game_over => open

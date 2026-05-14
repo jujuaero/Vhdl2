@@ -22,14 +22,14 @@ begin
             game_over <= '0';
         elsif rising_edge(clk) then
             if valid_hit='1' then
-                if scoring = 15 then
+                if scoring = 14 then
                     scoring <= scoring + 1;
                     game_over <= '1';
-                else
+                elsif scoring < 15 then
                     scoring <= scoring + 1;
+                else
+                    scoring <= scoring;
                 end if;
-            elsif valid_hit='0' then
-                game_over <= '1';
             end if;
         end if;
     end process;
