@@ -4,7 +4,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity debounce is
     generic(
-        DEBOUNCE_TICKS : natural := 2000000
+        DEBOUNCE_TICKS : natural := 200000
     );
     Port(
         clk  : in std_logic;
