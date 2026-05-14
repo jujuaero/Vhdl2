@@ -47,7 +47,7 @@ proc run_simulation {} {
     puts "To run with ghdl:"
     puts "  ghdl -a ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memory.vhd ../ual/memory_controller.vhd ../ual/custom_operations.vhd ../ual/ual.vhd ../ual/ual_system_top.vhd lfsr_mcu.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd"
     puts "  ghdl -e game_controller_tb"
-    puts "  ghdl -r game_controller_tb --vcd=game_controller.vcd"
+    puts "  ghdl -r game_controller_tb --wave=game_controller.ghw"
 }
 
 run_simulation

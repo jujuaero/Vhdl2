@@ -43,11 +43,11 @@ ghdl -a ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memo
 # Elaboration
 ghdl -e game_controller_tb
 
-# Simulation avec VCD
-ghdl -r game_controller_tb --vcd=game_controller.vcd
+# Simulation avec GHW
+ghdl -r game_controller_tb --wave=game_controller.ghw
 
 # Affichage avec gtkwave
-gtkwave game_controller.vcd
+gtkwave game_controller.ghw
 ```
 
 ### Avec Vivado:
