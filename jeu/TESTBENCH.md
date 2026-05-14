@@ -8,13 +8,20 @@
 ## Dépendances du testbench
 
 Le testbench compile dans cet ordre:
-1. `lfsr.vhd` - Linear Feedback Shift Register (générateur aléatoire)
-2. `timeout.vhd` - Gestion du timeout
-3. `score_counter.vhd` - Compteur de score
-4. `validation.vhd` - Validation des appuis boutons
-5. `debounce.vhd` - Anti-rebond des boutons
-6. `game_controller.vhd` - Contrôleur principal du jeu
-7. `game_controller_tb.vhd` - Testbench
+1. `../ual/register.vhd` - Registre synchrone générique
+2. `../ual/buffer_with_route.vhd` - Buffer avec routage
+3. `../ual/instruction_memory.vhd` - ROM d'instructions
+4. `../ual/memory_controller.vhd` - Contrôleur mémoire
+5. `../ual/custom_operations.vhd` - Opérations personnalisées
+6. `../ual/ual.vhd` - UAL (opérations logiques/arithmétiques)
+7. `../ual/ual_system_top.vhd` - Intégration UAL
+8. `lfsr_mcu.vhd` - LFSR via UAL
+9. `timeout.vhd` - Gestion du timeout
+10. `score_counter.vhd` - Compteur de score
+11. `validation.vhd` - Validation des appuis boutons
+12. `debounce.vhd` - Anti-rebond des boutons
+13. `game_controller.vhd` - Contrôleur principal du jeu
+14. `game_controller_tb.vhd` - Testbench
 
 ## Scénario de test
 
@@ -31,7 +38,7 @@ Le testbench simule:
 ### Avec GHDL:
 ```bash
 # Compilation
-ghdl -a lfsr.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd
+ghdl -a ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memory.vhd ../ual/memory_controller.vhd ../ual/custom_operations.vhd ../ual/ual.vhd ../ual/ual_system_top.vhd lfsr_mcu.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd
 
 # Elaboration
 ghdl -e game_controller_tb

@@ -33,6 +33,44 @@ architecture behavior of game_controller_tb is
 
     constant CLK_PERIOD : time := 10 ns;
 
+    procedure press_color(
+        signal btn_r_s : out std_logic;
+        signal btn_g_s : out std_logic;
+        signal btn_b_s : out std_logic;
+        color : std_logic_vector(2 downto 0)
+    ) is
+    begin
+        btn_r_s <= '0';
+        btn_g_s <= '0';
+        btn_b_s <= '0';
+
+        case color is
+            when "100" => btn_r_s <= '1';
+            when "010" => btn_g_s <= '1';
+            when "001" => btn_b_s <= '1';
+            when others => null;
+        end case;
+    end procedure;
+
+    procedure press_wrong_color(
+        signal btn_r_s : out std_logic;
+        signal btn_g_s : out std_logic;
+        signal btn_b_s : out std_logic;
+        color : std_logic_vector(2 downto 0)
+    ) is
+    begin
+        btn_r_s <= '0';
+        btn_g_s <= '0';
+        btn_b_s <= '0';
+
+        case color is
+            when "100" => btn_g_s <= '1';
+            when "010" => btn_b_s <= '1';
+            when "001" => btn_r_s <= '1';
+            when others => btn_r_s <= '1';
+        end case;
+    end procedure;
+
 begin
 
     uut: game_controller
@@ -61,6 +99,8 @@ begin
 
     -- Stimulus process
     stim_process: process
+        variable expected_score : unsigned(3 downto 0) := (others => '0');
+        variable color_sample : std_logic_vector(2 downto 0);
     begin
         -- Reset pulse
         res <= '1';
@@ -68,39 +108,44 @@ begin
         res <= '0';
         wait for 100 ns;
 
-        report "=== Test 1: Display first color (LFSR output) ===";
-        wait for 100 ns;
+        sw_level <= "11";
+        report "=== Test: Correct hits for several rounds ===";
+        wait for 10 * CLK_PERIOD;
 
-        -- Simulate button press for red button
-        report "Pressing RED button";
-        btn_r <= '1';
-        wait for 50 ns;
-        btn_r <= '0';
-        wait for 200 ns;
-
-        report "Pressing GREEN button";
-        btn_g <= '1';
-        wait for 50 ns;
-        btn_g <= '0';
-        wait for 200 ns;
-
-        report "Pressing BLUE button";
-        btn_b <= '1';
-        wait for 50 ns;
-        btn_b <= '0';
-        wait for 200 ns;
-
-        -- Continue for several rounds
         for i in 0 to 4 loop
-            report "Round " & integer'image(i+2);
-            wait for 500 ns;
-            btn_r <= '1';
-            wait for 50 ns;
+            color_sample := led_color;
+            press_color(btn_r, btn_g, btn_b, color_sample);
+            wait for 2 * CLK_PERIOD;
             btn_r <= '0';
-            wait for 500 ns;
+            btn_g <= '0';
+            btn_b <= '0';
+            wait for 2 * CLK_PERIOD;
+
+            expected_score := expected_score + 1;
+            assert unsigned(score) = expected_score
+                report "Score mismatch after round " & integer'image(i + 1)
+                severity error;
+            assert game_over = '0'
+                report "Unexpected game_over during correct rounds"
+                severity error;
+
+            wait for 6 * CLK_PERIOD;
         end loop;
 
-        wait for 1 us;
+        report "=== Test: Wrong hit triggers game_over ===";
+        color_sample := led_color;
+        press_wrong_color(btn_r, btn_g, btn_b, color_sample);
+        wait for 2 * CLK_PERIOD;
+        btn_r <= '0';
+        btn_g <= '0';
+        btn_b <= '0';
+        wait for 4 * CLK_PERIOD;
+
+        assert game_over = '1'
+            report "game_over not asserted after wrong hit"
+            severity error;
+
+        wait for 200 ns;
         report "=== Simulation End ===";
         wait;
     end process;
