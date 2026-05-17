@@ -103,7 +103,7 @@ begin
                     case rnd_color is
                         when "00"   => led_color_s <= "100";
                         when "01"   => led_color_s <= "010";
-                        when "10"   => led_color_s <= "001";
+                        when "10"   => led_color_s <= "001"; 
                         when others => led_color_s <= "000";
                     end case;
                     state <= WAIT_RESPONSE;
