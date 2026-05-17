@@ -1,5 +1,6 @@
-library IEEE;
+﻿library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity lfsr_mcu is
     Port (
@@ -11,20 +12,23 @@ entity lfsr_mcu is
 end lfsr_mcu;
 
 architecture Behavioral of lfsr_mcu is
-    signal lfsr_result : std_logic_vector(7 downto 0);
-    signal lfsr_valid  : std_logic;
+    signal current_state : std_logic_vector(3 downto 0) := "1011";
+    signal feedback_bit  : std_logic;
+    signal s_out         : std_logic_vector(7 downto 0);
 begin
+    feedback_bit <= current_state(3) xor current_state(2);
+
     U_MCU : entity work.ual_system_top
         port map(
             clk           => clk,
             reset         => res,
-            A_IN          => "1011",
+            A_IN          => current_state,
             B_IN          => "0000",
-            SR_IN_L       => '0',
-            SR_IN_R       => ena,  -- ena pilote SR_IN_R pour d�clencher le calcul
-            RES_OUT       => lfsr_result,
-            RES_VALID     => lfsr_valid,
-            S_OUT         => open,
+            SR_IN_L       => feedback_bit,
+            SR_IN_R       => '0',
+            S_OUT         => s_out,
+            RES_OUT       => open,
+            RES_VALID     => open,
             CACHE_1_OUT   => open,
             CACHE_2_OUT   => open,
             PC_OUT        => open,
@@ -36,6 +40,17 @@ begin
             SR_OUT_R      => open
         );
 
-    rnd <= lfsr_result(3 downto 0);
+    process(clk, res)
+    begin
+        if res = '1' then
+            current_state <= "1011";
+        elsif rising_edge(clk) then
+            if ena = '1' then
+                current_state <= s_out(3 downto 0);
+            end if;
+        end if;
+    end process;
+
+    rnd <= current_state;
 
 end Behavioral;
