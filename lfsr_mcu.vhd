@@ -12,24 +12,21 @@ entity lfsr_mcu is
 end lfsr_mcu;
 
 architecture Behavioral of lfsr_mcu is
-    signal current_state : std_logic_vector(3 downto 0) := "1011";
-    signal feedback_bit  : std_logic;
-    signal s_out         : std_logic_vector(7 downto 0);
+    signal cache_out : std_logic_vector(7 downto 0);
 begin
-    feedback_bit <= current_state(1) xor current_state(0);
 
     U_MCU : entity work.ual_system_top
         port map(
             clk           => clk,
             reset         => res,
-            A_IN          => current_state,
+            A_IN          => "1011",
             B_IN          => "0000",
-            SR_IN_L       => feedback_bit,
+            SR_IN_L       => '0',
             SR_IN_R       => '0',
-            S_OUT         => s_out,
+            S_OUT         => open,
             RES_OUT       => open,
             RES_VALID     => open,
-            CACHE_1_OUT   => open,
+            CACHE_1_OUT   => cache_out,
             CACHE_2_OUT   => open,
             PC_OUT        => open,
             INSTR_OUT     => open,
@@ -40,17 +37,7 @@ begin
             SR_OUT_R      => open
         );
 
-    process(clk, res)
-    begin
-        if res = '1' then
-            current_state <= "1011";
-        elsif rising_edge(clk) then
-            if ena = '1' then
-                current_state <= s_out(3 downto 0);
-            end if;
-        end if;
-    end process;
-
-    rnd <= current_state;
+    -- Sortie du vecteur pseudo-aleatoire
+    rnd <= cache_out(3 downto 0);
 
 end Behavioral;
