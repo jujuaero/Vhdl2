@@ -32,7 +32,7 @@ architecture Behavioral of game_controller is
     signal start_round_s: std_logic := '0';
 begin
     game_over <= '1' when state = END_GAME else '0';
-    U_LFSR : entity work.lfsr
+    U_LFSR : entity work.lfsr_mcu
         port map(
             clk => clk,
             res => res,
