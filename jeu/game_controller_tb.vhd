@@ -112,8 +112,34 @@ begin
         report "=== Test: Correct hits for several rounds ===";
         wait for 10 * CLK_PERIOD;
 
-        for i in 0 to 4 loop
+        -- Boucle originale (commentée):
+        -- for i in 0 to 4 loop
+        --     color_sample := led_color;
+        --     press_color(btn_r, btn_g, btn_b, color_sample);
+        --     wait for 2 * CLK_PERIOD;
+        --     btn_r <= '0';
+        --     btn_g <= '0';
+        --     btn_b <= '0';
+        --     wait for 2 * CLK_PERIOD;
+        --
+        --     expected_score := expected_score + 1;
+        --     assert unsigned(score) = expected_score
+        --         report "Score mismatch after round " & integer'image(i + 1)
+        --         severity error;
+        --     assert game_over = '0'
+        --         report "Unexpected game_over during correct rounds"
+        --         severity error;
+        --
+        --     wait for 6 * CLK_PERIOD;
+        -- end loop;
+
+        -- Réécriture: attendre la stabilisation du DUT, puis tester 15 itérations
+        for i in 0 to 14 loop
+            -- attendre que `led_color` soit stable
+            wait for 1 * CLK_PERIOD;
+            -- échantillonner la couleur affichée
             color_sample := led_color;
+            -- appuyer sur le bouton correspondant
             press_color(btn_r, btn_g, btn_b, color_sample);
             wait for 2 * CLK_PERIOD;
             btn_r <= '0';
@@ -121,7 +147,10 @@ begin
             btn_b <= '0';
             wait for 2 * CLK_PERIOD;
 
-            expected_score := expected_score + 1;
+            -- incrémenter correctement la variable unsigned
+            -- ancien: expected_score := expected_score + 1;
+            expected_score := expected_score + to_unsigned(1, expected_score'length);
+
             assert unsigned(score) = expected_score
                 report "Score mismatch after round " & integer'image(i + 1)
                 severity error;
