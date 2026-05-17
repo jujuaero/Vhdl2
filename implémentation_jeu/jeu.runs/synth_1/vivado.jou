@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# Vivado v2025.1 (64-bit)
+# SW Build 6140274 on Wed May 21 22:58:25 MDT 2025
+# IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
+# SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
+# Start of session at: Sun May 17 23:59:13 2026
+# Process ID         : 472634
+# Current directory  : /home/administrateur/jeu/jeu.runs/synth_1
+# Command line       : vivado -log top_logigame.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_logigame.tcl
+# Log file           : /home/administrateur/jeu/jeu.runs/synth_1/top_logigame.vds
+# Journal file       : /home/administrateur/jeu/jeu.runs/synth_1/vivado.jou
+# Running On         : 0226AUBUVVDO014
+# Platform           : Ubuntu
+# Operating System   : Ubuntu 24.04.3 LTS
+# Processor Detail   : Intel(R) Xeon(R) Gold 6230R CPU @ 2.10GHz
+# CPU Frequency      : 2095.077 MHz
+# CPU Physical cores : 2
+# CPU Logical cores  : 2
+# Host memory        : 12492 MB
+# Swap memory        : 4055 MB
+# Total Virtual      : 16548 MB
+# Available Virtual  : 13431 MB
+#-----------------------------------------------------------
+source top_logigame.tcl -notrace
