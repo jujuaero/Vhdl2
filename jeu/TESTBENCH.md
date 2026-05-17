@@ -15,7 +15,7 @@ Le testbench compile dans cet ordre:
 5. `../ual/custom_operations.vhd` - Opérations personnalisées
 6. `../ual/ual.vhd` - UAL (opérations logiques/arithmétiques)
 7. `../ual/ual_system_top.vhd` - Intégration UAL
-8. `lfsr_mcu.vhd` - LFSR via UAL
+8. `lfsr.vhd` - LFSR classique
 9. `timeout.vhd` - Gestion du timeout
 10. `score_counter.vhd` - Compteur de score
 11. `validation.vhd` - Validation des appuis boutons
@@ -38,7 +38,7 @@ Le testbench simule:
 ### Avec GHDL:
 ```bash
 # Compilation
-ghdl -a ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memory.vhd ../ual/memory_controller.vhd ../ual/custom_operations.vhd ../ual/ual.vhd ../ual/ual_system_top.vhd lfsr_mcu.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd
+ghdl -a -g --std=08 ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memory.vhd ../ual/memory_controller.vhd ../ual/custom_operations.vhd ../ual/ual.vhd ../ual/ual_system_top.vhd lfsr.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd
 
 # Elaboration
 ghdl -e game_controller_tb
@@ -76,11 +76,14 @@ gtkwave game_controller.ghw
 5. Timeout sans appui: `game_over = '1'`
 6. Après 15 appuis corrects: `game_over = '1'` (victoire)
 
-# 1. Compilation
-ghdl -a -g --std=08 ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memory.vhd ../ual/memory_controller.vhd ../ual/custom_operations.vhd ../ual/ual.vhd ../ual/ual_system_top.vhd lfsr_mcu.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd
+# 1. Nettoyage
+Remove-Item *.cf, *.exe -ErrorAction SilentlyContinue
 
-# 2. Élaboration
+# 2. Compilation
+ghdl -a -g --std=08 ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/instruction_memory.vhd ../ual/memory_controller.vhd ../ual/custom_operations.vhd ../ual/ual.vhd ../ual/ual_system_top.vhd lfsr.vhd lfsr_mcu.vhd timeout.vhd score_counter.vhd validation.vhd debounce.vhd game_controller.vhd game_controller_tb.vhd
+
+# 3. Élaboration
 ghdl -e -fexplicit --ieee=synopsys --std=08 game_controller_tb
 
-# 3. Simulation et génération du fichier GHW
+# 4. Simulation et génération du fichier GHW
 ghdl -r -fexplicit --ieee=synopsys --std=08 game_controller_tb --stop-time=1ms --wave=game_controller.ghw

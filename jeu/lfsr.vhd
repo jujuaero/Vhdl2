@@ -1,4 +1,4 @@
-﻿library IEEE;
+library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
@@ -20,7 +20,7 @@ begin
             reg <= "1011";
         elsif rising_edge(clk) then
             if ena='1' then
-                reg <= (reg(0) xor reg(1)) & reg(3 downto 1);
+                reg <= (reg(1) xor reg(0)) & reg(3 downto 1);
             end if;
         end if;
     end process;
