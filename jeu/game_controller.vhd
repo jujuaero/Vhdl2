@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity game_controller is
     Port(
@@ -16,10 +17,11 @@ entity game_controller is
 end game_controller;
 
 architecture Behavioral of game_controller is
-    type state_type is (IDLE, NEW_ROUND, WAIT_RESPONSE, END_GAME);
+    type state_type is (IDLE, PREPARE_ROUND, NEW_ROUND, WAIT_RESPONSE, END_GAME);
     signal state : state_type := IDLE;
 
     signal rnd          : std_logic_vector(3 downto 0);
+    signal rnd_color    : std_logic_vector(1 downto 0) := "00";
     signal led_color_s : std_logic_vector(2 downto 0) := "000";
     signal time_out_s   : std_logic := '0';
     signal valid_hit_s  : std_logic := '0';
@@ -82,23 +84,26 @@ begin
             led_color_s <= "000";
 
         elsif rising_edge(clk) then
-            ena_lfsr  <= '0';
+            ena_lfsr <= '0';
             sta_timer <= '0';
             start_round_s <= '0';
             case state is
                 when IDLE =>
-                    led_color_s <= "000";
-                    state       <= NEW_ROUND;
+                    ena_lfsr <= '1';
+                    state    <= PREPARE_ROUND;
+
+                when PREPARE_ROUND =>
+                    rnd_color <= std_logic_vector(to_unsigned(to_integer(unsigned(rnd)) mod 3, 2));
+                    state <= NEW_ROUND;
 
                 when NEW_ROUND =>
-                    ena_lfsr      <= '1';
                     sta_timer     <= '1';
                     start_round_s <= '1';
 
-                    case rnd(1 downto 0) is
+                    case rnd_color is
                         when "00"   => led_color_s <= "100";
                         when "01"   => led_color_s <= "010";
-                        when others => led_color_s <= "001";
+                        when "10"   => led_color_s <= "001";
                     end case;
                     state <= WAIT_RESPONSE;
 
@@ -108,7 +113,8 @@ begin
                     elsif invalid_hit_s = '1' then
                         state <= END_GAME;
                     elsif valid_hit_s = '1' then
-                        state <= NEW_ROUND;
+                        ena_lfsr <= '1';
+                        state <= PREPARE_ROUND;
                     elsif time_out_s = '1' then
                         state <= END_GAME;
                     end if;
