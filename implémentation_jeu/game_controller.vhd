@@ -84,7 +84,7 @@ begin
             led_color_s <= "000";
 
         elsif rising_edge(clk) then
-            ena_lfsr <= '0';
+            ena_lfsr <= '1';
             sta_timer <= '0';
             start_round_s <= '0';
             case state is
