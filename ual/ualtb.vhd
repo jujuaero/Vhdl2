@@ -85,25 +85,129 @@ begin
         reset_tb <= '1';
         wait for 12 ns;
         reset_tb <= '0';
+        wait for 8 ns;
 
-        -- Test 1 : Addition (A + B sans retenue)
-        A_tb <= "0011"; -- 3
-        B_tb <= "0100"; -- 4
-        instr_tb <= "1001" & "0000" & "00"; -- SEL_FCT=1001, SEL_ROUTE=0000, SEL_OUT=00
+        -- Afin d'être sûr d'attendre le coup d'horloge pour le contrôleur
+        -- chaque test assignera les entrées, puis attendra 20 ns pour lire et vérifier
+
+        -- Test 0: NOP (0000)
+        A_tb <= "0101";
+        B_tb <= "0011";
+        instr_tb <= "0000" & "0000" & "00";
         wait for 20 ns;
+        assert (S_tb = "00000000") report "Echec Test 0: NOP" severity error;
 
-        -- Test 2 : AND
+        -- Test 1: S = A (0001)
+        A_tb <= "0110"; -- 6
+        B_tb <= "1001";
+        instr_tb <= "0001" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00000110") report "Echec Test 1: S = A" severity error;
+
+        -- Test 2: S = not A (0010)
+        A_tb <= "0101"; 
+        instr_tb <= "0010" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00001010") report "Echec Test 2: S = not A" severity error; -- not 0101 = 1010
+
+        -- Test 3: S = B (0011)
+        A_tb <= "0000";
+        B_tb <= "1100"; -- -4 ou 12 (unsigned)
+        instr_tb <= "0011" & "0000" & "00";
+        wait for 20 ns;
+        -- B est casté en signed 8 bits : 1100 sign-extended -> 11111100
+        assert (S_tb = "11111100") report "Echec Test 3: S = B" severity error;
+
+        -- Test 4: S = not B (0100)
+        B_tb <= "0110"; 
+        instr_tb <= "0100" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00001001") report "Echec Test 4: S = not B" severity error; -- not 0110 = 1001
+
+        -- Test 5: S = A and B (0101)
         A_tb <= "1100";
         B_tb <= "1010";
-        instr_tb <= "0101" & "0001" & "01"; -- SEL_FCT=0101, route=0001, out=01
+        instr_tb <= "0101" & "0000" & "00";
         wait for 20 ns;
+        assert (S_tb = "00001000") report "Echec Test 5: A and B" severity error;
 
-        -- Test 3 : Subtraction
+        -- Test 6: S = A or B (0110)
+        A_tb <= "1100";
+        B_tb <= "1010";
+        instr_tb <= "0110" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00001110") report "Echec Test 6: A or B" severity error;
+
+        -- Test 7: S = A xor B (0111)
+        A_tb <= "1100";
+        B_tb <= "1010";
+        instr_tb <= "0111" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00000110") report "Echec Test 7: A xor B" severity error;
+
+        -- Test 8: S = A + B avec retenue d'entrée (1000)
+        A_tb <= "0011"; -- 3
+        B_tb <= "0010"; -- 2
+        SR_IN_R_tb <= '1';
+        instr_tb <= "1000" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00000110") report "Echec Test 8: A + B + 1" severity error; -- 3 + 2 + 1 = 6
+
+        -- Test 9: S = A + B sans retenue (1001)
+        A_tb <= "0010"; -- 2
+        B_tb <= "0011"; -- 3
+        SR_IN_R_tb <= '0';
+        instr_tb <= "1001" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00000101") report "Echec Test 9: A + B" severity error; -- 2 + 3 = 5
+
+        -- Test 10: S = A - B (1010)
         A_tb <= "0111"; -- 7
         B_tb <= "0010"; -- 2
-        instr_tb <= "1010" & "0010" & "10"; -- SEL_FCT=1010, route=0010, out=10
+        instr_tb <= "1010" & "0000" & "00";
         wait for 20 ns;
+        assert (S_tb = "00000101") report "Echec Test 10: A - B" severity error; -- 7 - 2 = 5
 
+        -- Test 11: S = A * B (1011)
+        A_tb <= "0011"; -- 3
+        B_tb <= "0010"; -- 2
+        instr_tb <= "1011" & "0000" & "00";
+        wait for 20 ns;
+        assert (S_tb = "00000110") report "Echec Test 11: A * B" severity error; -- 3 * 2 = 6
+
+        -- Test 12: Décalage droite A sur 4 bits (1100)
+        A_tb <= "1010";
+        SR_IN_L_tb <= '1';
+        instr_tb <= "1100" & "0000" & "00";
+        wait for 20 ns;
+        -- S(3) <= SR_IN_L (1), S(2..0) <= A(3..1) (101) => 1101
+        assert (S_tb(3 downto 0) = "1101" and SR_OUT_R_tb = '0') report "Echec Test 12: Déc Droite A" severity error;
+
+        -- Test 13: Décalage gauche A sur 4 bits (1101)
+        A_tb <= "1010";
+        SR_IN_R_tb <= '1';
+        instr_tb <= "1101" & "0000" & "00";
+        wait for 20 ns;
+        -- S(3..1) <= A(2..0) (010), S(0) <= SR_IN_R (1) => 0101
+        assert (S_tb(3 downto 0) = "0101" and SR_OUT_L_tb = '1') report "Echec Test 13: Déc Gauche A" severity error;
+
+        -- Test 14: Décalage droite B (1110)
+        B_tb <= "0111";
+        SR_IN_L_tb <= '0';
+        instr_tb <= "1110" & "0000" & "00";
+        wait for 20 ns;
+        -- S(3) <= 0, S(2..0) <= B(3..1) (011) => 0011
+        assert (S_tb(3 downto 0) = "0011" and SR_OUT_R_tb = '1') report "Echec Test 14: Déc Droite B" severity error;
+
+        -- Test 15: Décalage gauche B (1111)
+        B_tb <= "1101";
+        SR_IN_R_tb <= '0';
+        instr_tb <= "1111" & "0000" & "00";
+        wait for 20 ns;
+        -- S(3..1) <= B(2..0) (101), S(0) <= 0 => 1010
+        assert (S_tb(3 downto 0) = "1010" and SR_OUT_L_tb = '1') report "Echec Test 15: Déc Gauche B" severity error;
+
+        report "TESTS TERMINES AVEC SUCCES" severity note;
         wait;
     end process;
 
