@@ -1,5 +1,7 @@
 # VHDL2 - Conception de systèmes numériques
 
+[![Test du jeu](Capture%20d%27%C3%A9cran%202026-09-28%20180247.png)](test%20du%20jeu.mp4)
+
 Ce dépôt regroupe plusieurs projets VHDL réalisés dans le cadre du module de conception de systèmes numériques. Il contient notamment :
 
 - une Unité Arithmétique et Logique (UAL) avec contrôleur mémoire et opérations personnalisées,
@@ -106,12 +108,6 @@ ghdl -a -g --std=08 ../ual/register.vhd ../ual/buffer_with_route.vhd ../ual/inst
 ghdl -e game_controller_tb
 ghdl -r game_controller_tb --wave=game_controller.ghw
 ```
-
-## Démo du jeu
-
-[![Test du jeu](Capture%20d%27%C3%A9cran%202026-09-28%20180247.png)](test%20du%20jeu.mp4)
-
-La vidéo ci-dessus montre le programme exécuté sur la carte FPGA.
 
 ## Outils utilisés
 
